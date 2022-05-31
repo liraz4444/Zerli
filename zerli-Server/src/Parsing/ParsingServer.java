@@ -179,7 +179,8 @@ public class ParsingServer {
 		}
 		case Get_All_Order_by_id :{
 			String userId = (String) receivedMessage.getMessageData();
-			return (new Message(MessageType.Get_All_Order_by_id_succ,Query.get_Orders_list(userId)));
+			ArrayList<Order> orders=Query.get_Orders_list(userId);
+			return (new Message(MessageType.Get_All_Order_by_id_succ,orders));
 		}
 		case getRecipt :{
 			int orderNum = (int) receivedMessage.getMessageData();

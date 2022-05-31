@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import Entities.Delivery;
@@ -28,7 +29,7 @@ import main.ClientUI;
 public class ClientOrderPageController  extends AbstractController implements Initializable {
 	public  static ArrayList <Store> storesList ;
 	private ArrayList <String> storesNames ; 
-	private ArrayList<LocalTime> hourList;
+	private ArrayList<String> hourList;
 	private String[] Delivey = {"delivery" , "pick up"};
 	
 	private String choosingShop = null;
@@ -38,6 +39,7 @@ public class ClientOrderPageController  extends AbstractController implements In
     private boolean AddGreeting = false;
     public static Order order;
 	public static Float TotalPrice;
+	private String AM_PM;
 	
 	public static LocalTime orderTime = null;
 	public LocalTime suppTime = null;
@@ -109,7 +111,7 @@ public class ClientOrderPageController  extends AbstractController implements In
     void ToPayScreen(ActionEvent event) throws IOException {
     	setTime();
     	if(checkAllFileds()!=1) {return;}
-    	if(this.IsDelivery) {
+    	if(delivery!=null) {
     		ClientOrderPageController.TotalPrice +=this.delivery_price;
     		addDetailsToRecipt.append("Extra "+this.delivery_price+"$ shipping #");
     	}
@@ -120,10 +122,10 @@ public class ClientOrderPageController  extends AbstractController implements In
     
     private void createOrder() {
 		if (AddGreeting) {
-			order = new Order(greeting,"Not confirm",choosingShop,LoginScreenController.user.getId(),this.suppTime.toString(),this.suppDate.toString(),this.DeliverM);	
+			order = new Order(greeting,"Not confirm",choosingShop,LoginScreenController.user.getId(),this.suppTime.toString()+this.AM_PM,this.suppDate.toString(),this.DeliverM);	
 	}
 		else {
-			order = new Order("without","Not confirm",choosingShop,LoginScreenController.user.getId(),this.suppTime.toString(),this.suppDate.toString(),this.DeliverM);	
+			order = new Order("without","Not confirm",choosingShop,LoginScreenController.user.getId(),this.suppTime.toString()+this.AM_PM,this.suppDate.toString(),this.DeliverM);	
 			}
 		if(this.DeliverM.compareTo("delivery")==0) {
 			 order.delivery = this.delivery;
@@ -172,8 +174,9 @@ public class ClientOrderPageController  extends AbstractController implements In
 
     @FXML
 	private void setTime() {
-		LocalDate suppDate ;
-		LocalTime suppHourVal =LocalTime.now();
+		LocalDate suppDate;
+		DateTimeFormatter parser = DateTimeFormatter.ISO_LOCAL_TIME;
+		LocalTime suppHourVal = LocalTime.now();
 		
         this.UpLbl.setText("");
         this.UpLbl1.setText("");
@@ -185,14 +188,17 @@ public class ClientOrderPageController  extends AbstractController implements In
     	else {
     		suppDate = this.dateBox.getValue();
             String supphour = this.timeChoiseList.getValue();
-            for(LocalTime t : this.hourList) {
-            	if(supphour.compareTo(t.toString())==0) {
-            		suppHourVal = t;
+            for(String s : hourList) {
+            	if(supphour.compareTo(s)==0) {
+            		String[] h = s.split(" ");
+            		this.AM_PM = " "+h[1];
+            		suppHourVal = LocalTime.parse(h[0], parser);
             		
             	}
             }
     		
     	}
+
     	LocalDate nowd = LocalDate.now();
     	LocalTime nowh = LocalTime.now();
     	if (suppDate.compareTo(nowd)==-1) {
@@ -253,24 +259,45 @@ public class ClientOrderPageController  extends AbstractController implements In
 	 }
 	 
 	 
-     private ArrayList<LocalTime> CreateOpeningTimeList() {
-    	 this.hourList = new ArrayList<LocalTime>();
-    	 LocalTime current = LocalTime.of(9,0,0);
-    	 int i =current.getHour();
-    	 while( i < 21)
-    	 {
-    		     hourList.add(current.plusMinutes(30));	
-    			 hourList.add(current.plusHours(1));	 
-    			 i++;
-    			 current = LocalTime.of(i,0,0);
+     private ArrayList<String> CreateOpeningTimeList() {
+    	 ArrayList<String> hours = new ArrayList<String>();
+    	 hours.add("09:00 AM");
+    	 hours.add("09:30 AM");
+    	 int i=10;
+    	 while(i<12) {
+    		 hours.add(i+":00 AM");
+    		 hours.add(i+":30 AM");
+    		 i++;
     	 }
-		return hourList;
+    	 hours.add("12:00 PM");
+    	 hours.add("12:30 PM");
+    	 i=1;
+    	 while(i<=8) {
+    		 hours.add("0"+i+":00 PM");
+    		 hours.add("0"+i+":30 PM");
+    		 i++;
+    	 }
+		 return hours;
     	 
      }
      
 	@Override
 	public void display(String string) {
-	
+	       if(ClientOrderPageController.order!=null) {
+	    	   this.UpLbl.setText("Please choose new time for suppliement");
+	    	   this.shopDropDownMenu.setValue(order.getStore());
+	    	   if(order.getDelivery()!=null) {
+	    		   this.DeliveryMethodChoice.setValue("delivery");
+	    		   this.CityTextFiled.setText(order.delivery.getCity());
+	       	       this.AddressTextFiled.setText(order.delivery.getAddress());
+	       	       this.ReciverPhoneText.setText(order.delivery.getPhone());
+	       	       this.ReciverNameText.setText(order.delivery.getReciverName());
+	       	       this.deliveryPrice.setText("Extra "+this.delivery_price+"$ shipping");
+	    	   }
+	    	   else {
+	    		   this.DeliveryMethodChoice.setValue("pick up");
+	    	   }
+	       }
 	}
 	
 
@@ -289,14 +316,10 @@ public class ClientOrderPageController  extends AbstractController implements In
 		this.shopDropDownMenu.getItems().addAll(storesNames);
 		this.DeliveryMethodChoice.getItems().addAll(this.Delivey);
 		this.GreetingText.setDisable(true);
-		CreateOpeningTimeList();
 		
-		ArrayList<String> hours = new ArrayList<String> ();
-		for (LocalTime h : this.hourList) {
-			 hours.add(h.toString());
-		}
+		this.hourList= CreateOpeningTimeList();
 		
-		this.timeChoiseList.getItems().addAll(hours);
+		this.timeChoiseList.getItems().addAll(hourList);
         this.UpLbl.setText("");
         this.UpLbl1.setText("");
 	}
