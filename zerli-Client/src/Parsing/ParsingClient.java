@@ -19,6 +19,8 @@ import controlers.ClientAssemblyProductController;
 import controlers.ClientCatalogController;
 import controlers.ClientOrderPageController;
 import controlers.ClientOrdersController;
+import controlers.CustomerEmTableComplaintsScreenController;
+import controlers.CustomerEm_Insert_New_Com_Controller;
 import controlers.LoginScreenController;
 import controlers.ManagerAddAccountController;
 import controlers.ManagerFreezeController;
@@ -115,22 +117,22 @@ public class ParsingClient {
 		}
 		case CreditCardList_succ :{
 			PaymentScreenController.cardList =  (ArrayList<CreditCard>) (receivedMessage.getMessageData());
-		
+		break;
 		}
 		case CreditValue_succ :{
 			PaymentScreenController.CreditAmmount =receivedMessage.getMessageData() ;
 		
 		}
 		case CreditUsed_succ:{
-			
+			break;
 		}
 		
 		case Add_New_Payment_Method_succ:{
-			
+			break;
 		}
 		case Add_Order_succ:{
 			PaymentScreenController.OrderNum= receivedMessage.getMessageData();	
-		
+		break;
 		}
 		case IsNewClient_succ:{
 			PaymentScreenController.newClient= receivedMessage.getMessageData();		
@@ -144,9 +146,11 @@ public class ParsingClient {
 		case getRecipt_succ:{
 			ClientOrdersController.recipt =  (ArrayList<String>)( receivedMessage.getMessageData());
 		}
+		//liraz-3.6
 		case getIdFromComplaitnDB_succ:{
 			TableComplaintsScreenController.listID = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
+		//liraz-3.6
 		case getTableComplaintsFromDB_succ:{
 			TableComplaintsScreenController.listTable = (ArrayList<Complaint>)(receivedMessage.getMessageData());
 		}
@@ -159,12 +163,22 @@ public class ParsingClient {
 		case getCEOordersReports_succ:{
 			CEOViewReportsOrdersController.reports = (ArrayList<OrdersReport>)(receivedMessage.getMessageData());
 		}
+		//liraz-3.6
 		case getHomwStoreForCEORevenenueReports_succ: {
 			CEOViewReportsRevenueController.stores = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
+		//liraz-3.6
 		case getRevenueReportForCEO_succ: {
 			CEOViewReportsRevenueController.revenue = (ArrayList<RevenueReport>)(receivedMessage.getMessageData());
 		}
+		case UpdateCompList_succ:{
+			CustomerEmTableComplaintsScreenController.complaints = (ArrayList<Complaint>) (receivedMessage.getMessageData());
+			break;
+		}
+		case ClientExist_succ:{
+			CustomerEm_Insert_New_Com_Controller.ClientEx=!((ArrayList<String>) (receivedMessage.getMessageData())).isEmpty();
+		}
+
 		default:{
 			break;
 		}

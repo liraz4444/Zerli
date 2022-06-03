@@ -1,58 +1,59 @@
 package Entities;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class Complaint implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private String id,complaintTime,status,reason,refund;
-	private int orderNum;
+	private String clientId,status,reason,refund;
+	Timestamp complaintTime;
+	private int alert=0;
 	
-	public Complaint(int orderNum, String id, String complaintTime,String status, String reason,String refund) {
-		this.orderNum = orderNum;
-		this.id = id;
-		this.complaintTime = complaintTime;
-		this.status = status;
-		this.reason = reason;
-		this.refund = refund;
-	
-	}
 	
 
-	public String getId() {
-		return id;
+	public Complaint(String clientId,String status , Timestamp time, String reason,String refund) {
+
+		this.clientId = clientId;
+		this.status = status;
+		this.complaintTime = time;
+		this.reason = reason;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public int getAlert() {
+		return alert;
 	}
-	public String getComplaintTime() {
-		return complaintTime;
+	
+	public String getClientId() {
+		return clientId;
 	}
-	public void setComplaintTime(String complaintTime) {
-		this.complaintTime = complaintTime;
-	}
+
 	public String getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+
 	public String getReason() {
 		return reason;
 	}
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
+
 	public String getRefund() {
 		return refund;
 	}
-	public void setRefund(String refund) {
-		this.refund = refund;
+
+	public Timestamp getComplaintTime() {
+		return complaintTime;
 	}
-	public int getOrderNum() {
-		return orderNum;
+	
+	public void setComplaintTime(Timestamp time) {
+		this.complaintTime =time;
 	}
-	public void setOrderNum(int orderNum) {
-		this.orderNum = orderNum;
+	
+	public void setAlert(int f) {
+		this.alert=f;
 	}
+	
+	public String toString() {
+		return "Client: "+clientId+"\n"+"Topic: "+reason +"\n"+"Status: "+status+"\n";
+		
+	}
+
 }

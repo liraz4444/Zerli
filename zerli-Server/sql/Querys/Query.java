@@ -540,7 +540,7 @@ public class Query {
 				stmt.setString(1,userId);
 				ResultSet rs = stmt.executeQuery();
 				while (rs.next()) {
-					orders.add(new Order(rs.getInt("OrderNum"),rs.getString("store"),rs.getString("greeting"),rs.getString("status"),rs.getString("price"),
+					orders.add(new Order(rs.getString("clientId"),rs.getInt("OrderNum"),rs.getString("store"),rs.getString("greeting"),rs.getString("status"),rs.getString("price"),
 							rs.getString("supplimentMethod"),rs.getString("supplimentTime"),rs.getString("supplimentDate"),rs.getTimestamp("OrderTime")));
 				}
 				
@@ -552,7 +552,26 @@ public class Query {
 
 			return orders;
 		}
-			
+		public static ArrayList<Order> get_Orders_list_by_store(String store)	{
+			ArrayList<Order> orders =new ArrayList<Order>(); 
+			PreparedStatement stmt;
+			try {
+				stmt = DBConnect.conn.prepareStatement("SELECT * From zerli_db.orders WHERE store = ?");
+				stmt.setString(1,store);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					orders.add(new Order(rs.getString("clientId"),rs.getInt("OrderNum"),rs.getString("store"),rs.getString("greeting"),rs.getString("status"),rs.getString("price"),
+							rs.getString("supplimentMethod"),rs.getString("supplimentTime"),rs.getString("supplimentDate"),rs.getTimestamp("OrderTime")));
+				}
+				
+				rs.close();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+
+			return orders;
+		}
 		public static ArrayList<String> getIDFromComplaintDB() {
 			ArrayList<String> listID = new ArrayList<String>();
 			PreparedStatement stmt;
@@ -570,32 +589,32 @@ public class Query {
 			return listID;				
 		}
 
-		public static ArrayList<Complaint> getCmplaintsTable() {
-			ArrayList<Complaint> list = new ArrayList<>();
-			Statement stmt;
-			try {
-				if (DBConnect.conn != null) {
-					stmt = DBConnect.conn.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT * FROM zerli_db.complaints");
-					while (rs.next()) {
-					//	int orderNum = rs.getString("orderNum");
-						String id = rs.getString("id");
-						String complaintTime = rs.getString("complaintTime");
-						String status = rs.getString("status");
-						String reason = rs.getString("reason");
-						String refund = rs.getString("refund");
-						//list.add(new Complaint(orderNum,id,complaintTime,status,reason,refund));
-					}
-					rs.close();
-				} else {
-					System.out.println("Conn is null");
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return list;
-		}
+//		public static ArrayList<Complaint> getCmplaintsTable() {
+//			ArrayList<Complaint> list = new ArrayList<>();
+//			Statement stmt;
+//			try {
+//				if (DBConnect.conn != null) {
+//					stmt = DBConnect.conn.createStatement();
+//					ResultSet rs = stmt.executeQuery("SELECT * FROM zerli_db.complaints");
+//					while (rs.next()) {
+//					//	int orderNum = rs.getString("orderNum");
+//						String id = rs.getString("id");
+//						String complaintTime = rs.getString("complaintTime");
+//						String status = rs.getString("status");
+//						String reason = rs.getString("reason");
+//						String refund = rs.getString("refund");
+//						//list.add(new Complaint(orderNum,id,complaintTime,status,reason,refund));
+//					}
+//					rs.close();
+//				} else {
+//					System.out.println("Conn is null");
+//				}
+//
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			return list;
+//		}
 
 		public static void UpdateRefundToClient(ArrayList<String> details) {
 			PreparedStatement stmt;
@@ -720,42 +739,31 @@ public class Query {
 				}
 			
 		}
-
+		//liraz-3.6
 		public static ArrayList<Order> get_Orders_list_for_manager(String managerStore) {
-			ArrayList<Order> orders = new ArrayList<>();
-			PreparedStatement stmt;
-			try {
-				if (DBConnect.conn != null) {
-					stmt = DBConnect.conn.prepareStatement("SELECT * FROM zerli_db.orders");
-					//stmt.setString(1,managerStore); //id
+				ArrayList<Order> orders =new ArrayList<Order>(); 
+				PreparedStatement stmt;
+				System.out.println("line - 727");
+				try {
+					stmt = DBConnect.conn.prepareStatement("SELECT * From zerli_db.orders WHERE store = ?");
+					stmt.setString(1,managerStore);
 					ResultSet rs = stmt.executeQuery();
+					System.out.println("line - 732");
 					while (rs.next()) {
-						int orderNum = Integer.parseInt(rs.getString("OrderNum"));
-						String store = rs.getString("store");
-						//String clientId = rs.getString("clientId");
-						String price = rs.getString("price");
-						String greeting = rs.getString("greeting");
-						String status = rs.getString("status");
-						String supplimentMethod = rs.getString("supplimentMethod");
-						String supplimentTime = rs.getString("supplimentTime");
-						String supplimentDate = rs.getString("supplimentDate");
-						Timestamp OrderTime = Timestamp.valueOf(rs.getString("OrderTime"));
-						
-						orders.add(new Order(orderNum,store,price,greeting,status,supplimentMethod,supplimentTime,supplimentDate,OrderTime));
-						System.out.println(orders);
+						orders.add(new Order(rs.getString("clientId"),rs.getInt("OrderNum"),rs.getString("store"),rs.getString("greeting"),rs.getString("status"),rs.getString("price"),
+								rs.getString("supplimentMethod"),rs.getString("supplimentTime"),rs.getString("supplimentDate"),rs.getTimestamp("OrderTime")));
+						System.out.println(orders.toString());
 					}
+					
 					rs.close();
-				} else {
-					System.out.println("Conn is null");
-				}
 
-			} catch (SQLException e) {
+					} catch (SQLException e) {
 				e.printStackTrace();
+					}
+				
+				return orders;
 			}
-			
-			return orders;
-		}
-
+		//liraz-3.6
 		public static ArrayList<String> GetStoreListForCEORevenueReports() {
 			ArrayList<String> stores = new ArrayList<String>();
 			Statement stmt;
@@ -771,7 +779,7 @@ public class Query {
 				}
 			return stores;
 		}
-
+		//liraz-3.6
 		public static ArrayList<RevenueReport> get_Revenue_Reports_ForCEO(String store) {
 			ArrayList<RevenueReport> revenue = new ArrayList<>();
 			PreparedStatement stmt;
@@ -801,6 +809,120 @@ public class Query {
 			
 			return revenue;
 		}
+		
+		public static ArrayList<Complaint> getComplaints() {
+			ArrayList<Complaint> complaints =new ArrayList<Complaint>(); 
+			PreparedStatement stmt;
+			try {
+				stmt = DBConnect.conn.prepareStatement("SELECT * From zerli_db.complaints");
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					complaints.add(new Complaint(rs.getString("clientId"),rs.getString("status"),rs.getTimestamp("complaintTime"),rs.getString("reason"),rs.getString("refund")));
+				}
+				
+				rs.close();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+
+			return complaints;
+		}
+
+		public static ArrayList<String> check_If_Client_Exist(String clientId) {
+			ArrayList<String> clients =new ArrayList<String>(); 
+			PreparedStatement stmt;
+			try {
+				stmt = DBConnect.conn.prepareStatement("SELECT client_id From zerli_db.client WHERE client_id = ?");
+				stmt.setString(1,clientId);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					clients.add(rs.getString("client_id"));
+				}
+				
+				rs.close();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+
+			return clients;
+			
+		}
+
+		public static void Update_Complaint(ArrayList<String> details) {
+			PreparedStatement stmt;
+			try {
+				stmt = DBConnect.conn.prepareStatement("INSERT INTO zerli_db.complaints (clientId,complaintTime,status,reason,refund) VALUES(?,now(),?,?,?)");
+				stmt.setString(1,details.get(0));
+				stmt.setString(2,details.get(1));
+				stmt.setString(3,details.get(2));
+				stmt.setString(4,details.get(3));
+				stmt.executeUpdate();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			
+		}
+
+		public static void Update_Complaint_details(ArrayList<String> details) {
+			PreparedStatement stmt;
+			try {
+				stmt = DBConnect.conn.prepareStatement("UPDATE zerli_db.complaints SET status=? , refund=? WHERE clientId=? ");
+				stmt.setString(1,details.get(1));
+				stmt.setString(2,details.get(2));
+				stmt.setString(3,details.get(0));
+				stmt.executeUpdate();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			
+			
+		}
+
+		public static void Update_refund(ArrayList<String> details) {
+			int creditVal = getCreditValue(details.get(0));
+			int newCredit = creditVal +Integer.valueOf(details.get(2));
+			setCreditValue(details.get(0),String.valueOf(newCredit)) ;
+		}
+
+		public static void UpdateOrderCancel(ArrayList<String> details) {
+			PreparedStatement stmt;
+			try {
+				stmt = DBConnect.conn.prepareStatement("INSERT INTO zerli_db.orders_cancel (clientID,OrderNum,Refund,Amount) VALUES(?,?,?,?)");
+				stmt.setString(1,details.get(0));
+				stmt.setString(2,details.get(1));
+				stmt.setString(3,details.get(2));
+				stmt.setInt(4,Integer.valueOf(details.get(3)));
+				stmt.executeUpdate();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			
+		}
+
+		public static void Update_refund_of_cancel_order(ArrayList<String> details) {
+			PreparedStatement stmt;
+			Integer amount = new Integer(0);
+			try {
+				stmt = DBConnect.conn.prepareStatement("SELECT Amount FROM zerli_db.orders_cancel WHERE clientID = ? AND OrderNum = ?");
+				stmt.setString(1,details.get(0));
+				stmt.setString(2,details.get(1));
+				ResultSet rs = stmt.executeQuery();
+				while(rs.next()) {
+					amount =rs.getInt("Amount");
+				}
+				rs.close();
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			details.add(String.valueOf(amount));
+			Update_refund(details);
+			}
+			
 }
 
 		

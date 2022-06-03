@@ -69,7 +69,7 @@ import main.ClientUI;
 				} else {
 					StringBuilder str = new StringBuilder();
 					str.append(usernameTxt.getText());
-					str.append("@");
+					str.append("#");
 					str.append(passwordTxt.getText());
 					ClientUI.chat.accept(new Message(MessageType.userlogin, str.toString())); 
 					
@@ -86,18 +86,17 @@ import main.ClientUI;
 					}
 
 					case "Customer": {
-						System.out.println("working!");
 						start(event, "ClientMainPage", "Customer Screen", user.getFirstN());
 						break;
 					}
 
 					case "CEO": {
-						start(event, "MainCEOScreen", "CEO", user.getFirstN());
+						start(event, "CEOScreen", "CEO", user.getFirstN());
 						break;
 
 					}
 					case "CustomerEmployee": {
-						start(event, "CustomerEmployeeScreen", "CustomerEmployee", user.getFirstN());
+						start(event, "CustomerEm_main_page", "Customers service employee screen", user.getFirstN());
 						break;
 
 				    }

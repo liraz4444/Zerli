@@ -16,5 +16,5 @@ public enum MessageType {
 	getStore_succ, getTypesForCEOordersReports, getTypeProductForCEOordersReports_succ, getStoresForCEOordersReports, getHomwStoreForCEOordersReports_succ, getCEOordersReport, getCEOordersReports_succ, 
 	InitialShopsList, CreditCardList, CreditValue, CreditUsed, Add_New_Payment_Method, Add_Order, IsNewClient, UpdateNewClientDiscount, UpdateNewClientDiscount_succ, IsNewClient_succ,
 	Add_Order_succ, Add_New_Payment_Method_succ, CreditUsed_succ, CreditValue_succ, CreditCardList_succ, InitialShopsList_succ, Add_Recipt, Add_Recipt_succ, Get_All_Order_by_id, Get_All_Order_by_id_succ, getRecipt, getRecipt_succ, Get_All_Order_by_Store, UpdateOrderStatus, UpdateOrderStatus_succ, Get_All_Order_by_Store_succ,
-	getStoresForCEORevenueReports, getHomwStoreForCEORevenenueReports_succ, showRevenueReportsForCEO, getRevenueReportForCEO_succ,
+	getStoresForCEORevenueReports, getHomwStoreForCEORevenenueReports_succ, showRevenueReportsForCEO, getRevenueReportForCEO_succ, Get_Orders_by_Store, UpdateCreditForClient, UpdateOrderCancel, UpdateCompList, Update_refund, UpdateCompLaintDetails, Upload_Complaint, ClientExist, UpdateCompList_succ, ClientExist_succ, Upload_Complaint_succ, UpdateOrderCancel_succ, Get_Orders_by_Store_succ,
 }

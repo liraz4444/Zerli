@@ -21,7 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import main.ClientUI;
 
 public class ManagerOrdersController extends AbstractController implements Initializable {
-	public static ArrayList<Order> list; 
+	public static ArrayList<Order> listOfOrders ;
     private String Status;
     private int OrderNum;
     
@@ -60,6 +60,9 @@ public class ManagerOrdersController extends AbstractController implements Initi
     
     @FXML
     private TableColumn<Order, String> statusCol;
+    
+    @FXML
+    private TableColumn<Order, String> clientIdCol;
 
     @FXML
     private Button backBtn;
@@ -77,21 +80,25 @@ public class ManagerOrdersController extends AbstractController implements Initi
     @FXML
     void CancelSelectedOrder(ActionEvent event) throws IOException {
     	upLbl.setText("");
-        ObservableList<Order> list;
-        list = this.table.getSelectionModel().getSelectedItems();
-        if(list!=null) {
-        	Status=list.get(0).getStatus();
-        	OrderNum=list.get(0).getOrderNumber();
-        	if(!Status.equals("There is a request to cancel")) {
+        Order order = null;
+        order = table.getSelectionModel().getSelectedItem();
+        if(order!=null) {
+        	Status=order.getStatus();
+        	OrderNum=order.getOrderNumber();
+        	if(Status.equals("There is a request to cancel")) {
         		ArrayList<String> arr = new ArrayList<String>();
         		arr.add("canceled");
         		arr.add(String.valueOf(OrderNum));
         		ClientUI.chat.accept(new Message(MessageType.UpdateOrderStatus,arr));
-                initialize(location, resources);
+        		arr.clear();
+        		arr.add(order.getClientId());
+        		arr.add(String.valueOf(OrderNum));
+        		ClientUI.chat.accept(new Message(MessageType.UpdateCreditForClient,arr));
+                initialize(location, resources) ;
         	}
         	else 
         	{
-            	upLbl.setText("There  is no request to cancel!");
+            	upLbl.setText("There is no cancel request for this order");
             	return;
         	}
 
@@ -103,10 +110,33 @@ public class ManagerOrdersController extends AbstractController implements Initi
         }
     }
 
-//    @FXML
-//    void ConfirmOrder(ActionEvent event) {
-//
-//    }
+    @FXML
+    void ConfirmOrder(ActionEvent event) {
+    	upLbl.setText("");
+        Order order = null;
+        order = table.getSelectionModel().getSelectedItem();
+        if(order!=null) {
+        	Status=order.getStatus();
+        	OrderNum=order.getOrderNumber();
+        	if(Status.equals("Not confirm ")) {
+        		ArrayList<String> arr = new ArrayList<String>();
+        		arr.add("Confirm");
+        		arr.add(String.valueOf(OrderNum));
+        		ClientUI.chat.accept(new Message(MessageType.UpdateOrderStatus,arr));
+        	}
+        	else 
+        	{
+            	upLbl.setText("This order already confirmed");
+            	return;
+        	}
+
+       }
+        else 
+        {
+        	upLbl.setText("Please select order from the table.");
+        	return;
+        }
+    }
     
     @FXML
     void backMainPage(ActionEvent event) throws IOException {
@@ -115,19 +145,21 @@ public class ManagerOrdersController extends AbstractController implements Initi
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		ClientUI.chat.accept(new Message(MessageType.Get_All_Order_by_Store,LoginScreenController.user.getHomeStore()));
-//		ObservableList<Order> observableList = FXCollections.observableArrayList(list);
-//		table.getItems().clear();
-//		orderNumberCol.setCellValueFactory(new PropertyValueFactory<>("OrderNumber"));
-//		storeCol.setCellValueFactory(new PropertyValueFactory<>("Store"));
-//		priceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
-//		greetingCardCol.setCellValueFactory(new PropertyValueFactory<>("GreetingCard"));
-//		statusCol.setCellValueFactory(new PropertyValueFactory<>("Status"));
-//		DeliveryMethodCol.setCellValueFactory(new PropertyValueFactory<>("SupplimentMethod"));
-//		suppTimeCol.setCellValueFactory(new PropertyValueFactory<>("SuppTime"));
-//		suppDateCol.setCellValueFactory(new PropertyValueFactory<>("SuppDate"));
-//		OrderTimeCol.setCellValueFactory(new PropertyValueFactory<>("OrderTime"));
-//		table.setItems(observableList);	
+    	this.upLbl.setText("");
+		ClientUI.chat.accept(new Message(MessageType.Get_Orders_by_Store,LoginScreenController.user.getHomeStore()));
+		ObservableList<Order> observableList = FXCollections.observableArrayList(listOfOrders);
+		table.getItems().clear();
+		orderNumberCol.setCellValueFactory(new PropertyValueFactory<>("OrderNumber"));
+		storeCol.setCellValueFactory(new PropertyValueFactory<>("Store"));
+		priceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
+		greetingCardCol.setCellValueFactory(new PropertyValueFactory<>("GreetingCard"));
+		statusCol.setCellValueFactory(new PropertyValueFactory<>("Status"));
+		DeliveryMethodCol.setCellValueFactory(new PropertyValueFactory<>("SupplimentMethod"));
+		suppTimeCol.setCellValueFactory(new PropertyValueFactory<>("SuppTime"));
+		suppDateCol.setCellValueFactory(new PropertyValueFactory<>("SuppDate"));
+		OrderTimeCol.setCellValueFactory(new PropertyValueFactory<>("OrderTime"));
+		clientIdCol.setCellValueFactory(new PropertyValueFactory<>("ClientId"));
+		table.setItems(observableList);	
 	}
 
 	@Override
