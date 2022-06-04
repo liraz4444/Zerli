@@ -124,14 +124,14 @@ public class PaymentScreenController extends AbstractController implements Initi
 		}	
 		
 		ClientOrderPageController.addDetailsToRecipt.append("Final price = "+TotalPrice+" $");
-		CartScreenController.cart.CreateRecipt();
-		CartScreenController.cart.addToRecipt(ClientOrderPageController.addDetailsToRecipt.toString());
-		
+		ClientCartScreenController.cart.CreateRecipt();
+		ClientCartScreenController.cart.addToRecipt(ClientOrderPageController.addDetailsToRecipt.toString());
+		ClientCartScreenController.Update_Inventory();
 		UpdateOrderInDB();
 		updateReciptInDB();
 		
-		CartScreenController.cart.Order_Components.clear();
-		CartScreenController.cart.setNumberOfItems();
+		ClientCartScreenController.cart.Order_Components.clear();
+		ClientCartScreenController.cart.setNumberOfItems();
 		start(event, "ClientMainPage", "Main page", "");
 
     }
@@ -139,10 +139,10 @@ public class PaymentScreenController extends AbstractController implements Initi
     private void updateReciptInDB() {
 
     	StringBuilder str = new StringBuilder();
-    	System.out.println(CartScreenController.cart.Recipt);
+    	System.out.println(ClientCartScreenController.cart.Recipt);
 		str.append(OrderNum);
 		str.append("@");
-		str.append(CartScreenController.cart.Recipt);		
+		str.append(ClientCartScreenController.cart.Recipt);		
         ClientUI.chat.accept(new Message(MessageType.Add_Recipt,str.toString()));
 		
 	}
@@ -245,7 +245,6 @@ public class PaymentScreenController extends AbstractController implements Initi
           PaymentScreenController.TotalPrice = (float) (TotalPrice*0.8);
 		}	
 		
-		ClientUI.chat.accept(new Message(MessageType.CreditValue,id));
 		ClientUI.chat.accept(new Message(MessageType.CreditCardList,id));
 		
 		ArrayList<String> cardsForView = new ArrayList<String>();
@@ -254,12 +253,13 @@ public class PaymentScreenController extends AbstractController implements Initi
 	}
 		cardsList.getItems().addAll(cardsForView);
 		
+		ClientUI.chat.accept(new Message(MessageType.CreditValue,id));
 		ArrayList<Integer> numList = new ArrayList<Integer>();
 		int i = 0 ;
-		if((Integer)(CreditAmmount) > TotalPrice ) {
+		if((Integer)CreditAmmount > TotalPrice ) {
 			PaymentScreenController.CreditAmmount =TotalPrice.intValue();
 		}
-	
+		
 		while(i<=(Integer)PaymentScreenController.CreditAmmount) {
 			numList.add(i);
 			i++;

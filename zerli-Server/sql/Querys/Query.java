@@ -15,6 +15,7 @@ import Entities.CreditCard;
 import Entities.Item_In_Catalog;
 import Entities.Order;
 import Entities.OrdersReport;
+import Entities.Product_In_Inventory;
 import Entities.RevenueReport;
 import Entities.Store;
 
@@ -127,7 +128,7 @@ public class Query {
 		if (DBConnect.conn != null) {
 			try {
 					PreparedStatement stmt2 = DBConnect.conn.prepareStatement(
-					"INSERT INTO zerli_db.account (userName,password,role,firstName,lastName,ID,email,phone) VALUES(?,?,?,?,?,?,?,?)");
+					"INSERT INTO zerli_db.users (userName,password,Role,FirstName,LastName,ID,email,phone,isLoggedIn) VALUES(?,?,?,?,?,?,?,?,?)");
 					stmt2.setString(1, Account.getUserName());
 					stmt2.setString(2, Account.getPassword());
 					stmt2.setString(3, Account.getRole());
@@ -136,11 +137,13 @@ public class Query {
 					stmt2.setString(6, Account.getId());
 					stmt2.setString(7, Account.getEmail());
 					stmt2.setString(8, Account.getPhone());
+					stmt2.setInt(9, 0); //The account insert in looggedId = 0
 					stmt2.executeUpdate();
 					PreparedStatement stmt3 = DBConnect.conn.prepareStatement(
-							"INSERT INTO client (client_id,status) VALUES(?,?)");
+							"INSERT INTO client (client_id,status,CreditCardNumber) VALUES(?,?,?)");
 					stmt3.setString(1, Account.getId());
 					stmt3.setString(2, "Active");
+					stmt3.setString(3, Account.getCreditCardNumber());
 					stmt3.executeUpdate();
 			} catch (SQLException s) {
 				s.printStackTrace();
@@ -208,6 +211,7 @@ public class Query {
 			return month;
 		}
 		
+		//ask dana why is change
 		public static ArrayList<RevenueReport> getRevenueReports(ArrayList<String> details) {
 			ArrayList<RevenueReport> revenue = new ArrayList<>();
 			PreparedStatement stmt;
@@ -287,7 +291,7 @@ public class Query {
 			
 			return orders;
 		}
-
+		//ask dana why is change
 		public static ArrayList<String> getCustomerToFreeze(String store) {
 			ArrayList<String> customerList = null;
 			PreparedStatement stmt;
@@ -322,7 +326,7 @@ public class Query {
 			Statement stmt;
 			try {
 				stmt = DBConnect.conn.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT city FROM zerli_db.stores");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT storeCode FROM zerli_db.stores");
 				storelist = new ArrayList<String>();
 				while (rs.next()) {
 					storelist.add(rs.getString(1));
@@ -355,10 +359,10 @@ public class Query {
 		public static ArrayList<String> setDetailsInItem(ArrayList<String> details) {
 			PreparedStatement stmt;
 			try {
-		    	stmt = DBConnect.conn.prepareStatement("UPDATE zerli_db.users SET price=? WHERE type=? AND name=?");
-		    	stmt.setString(1,details.get(0));
-		    	stmt.setString(1,details.get(1));
-		    	stmt.setString(1,details.get(2));
+		    	stmt = DBConnect.conn.prepareStatement("UPDATE zerli_db.item_in_catalog SET price=? WHERE type=? AND name=?");
+		    	stmt.setFloat(1,Float.valueOf(details.get(0)));
+		    	stmt.setString(2,details.get(1));
+		    	stmt.setString(3,details.get(2));
 			    stmt.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -615,19 +619,19 @@ public class Query {
 //			return list;
 //		}
 
-		public static void UpdateRefundToClient(ArrayList<String> details) {
-			PreparedStatement stmt;
-			System.out.println(details.get(0));
-			System.out.println(details.get(1));
-			try {
-		    	stmt = DBConnect.conn.prepareStatement("INSERT INTO refund(id,amount) VALUES(?,?)");
-		    	stmt.setString(1,details.get(0));
-		    	stmt.setString(2,details.get(1));
-			    stmt.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}			
-		}
+//		public static void UpdateRefundToClient(ArrayList<String> details) {
+//			PreparedStatement stmt;
+//			System.out.println(details.get(0));
+//			System.out.println(details.get(1));
+//			try {
+//		    	stmt = DBConnect.conn.prepareStatement("INSERT INTO refund(id,amount) VALUES(?,?)");
+//		    	stmt.setString(1,details.get(0));
+//		    	stmt.setString(2,details.get(1));
+//			    stmt.executeUpdate();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}			
+//		}
 
 		public static ArrayList<String> getListOfStoreForCeo() {
 				ArrayList<String> stores = new ArrayList<String>();
@@ -738,20 +742,18 @@ public class Query {
 				}
 			
 		}
-		//liraz-3.6
+		//liraz 4.6 - not exist on dana git
 		public static ArrayList<Order> get_Orders_list_for_manager(String managerStore) {
 				ArrayList<Order> orders =new ArrayList<Order>(); 
 				PreparedStatement stmt;
-				System.out.println("line - 727");
 				try {
 					stmt = DBConnect.conn.prepareStatement("SELECT * From zerli_db.orders WHERE store = ?");
 					stmt.setString(1,managerStore);
 					ResultSet rs = stmt.executeQuery();
-					System.out.println("line - 732");
 					while (rs.next()) {
 						orders.add(new Order(rs.getString("clientId"),rs.getInt("OrderNum"),rs.getString("store"),rs.getString("greeting"),rs.getString("status"),rs.getString("price"),
 								rs.getString("supplimentMethod"),rs.getString("supplimentTime"),rs.getString("supplimentDate"),rs.getTimestamp("OrderTime")));
-						System.out.println(orders.toString());
+						
 					}
 					
 					rs.close();
@@ -762,7 +764,7 @@ public class Query {
 				
 				return orders;
 			}
-		//liraz-3.6
+		//liraz 4.6 - not exist on dana git
 		public static ArrayList<String> GetStoreListForCEORevenueReports() {
 			ArrayList<String> stores = new ArrayList<String>();
 			Statement stmt;
@@ -778,7 +780,7 @@ public class Query {
 				}
 			return stores;
 		}
-		//liraz-3.6
+		//liraz 4.6 - not exist on dana git
 		public static ArrayList<RevenueReport> get_Revenue_Reports_ForCEO(String store) {
 			ArrayList<RevenueReport> revenue = new ArrayList<>();
 			PreparedStatement stmt;
@@ -921,7 +923,110 @@ public class Query {
 			details.add(String.valueOf(amount));
 			Update_refund(details);
 			}
-		//liraz-3.6
+		
+		public static ArrayList<String> getClientEmailAndPhone(String clientId) {
+			ArrayList<String> Email_Phone=new ArrayList<String>(); 
+			PreparedStatement stmt;
+			try {
+				stmt = DBConnect.conn.prepareStatement("SELECT email,phone From zerli_db.users WHERE ID = ? ");
+				stmt.setString(1,clientId);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					 Email_Phone.add(rs.getString("email"));
+					 Email_Phone.add(rs.getString("phone"));
+				}
+				rs.close();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+
+			return  Email_Phone;
+			
+		}
+		
+		public static Object get_All_Catalog() {
+			ArrayList<Item_In_Catalog> Catalog= new ArrayList<>();
+			PreparedStatement stmt;
+			try {
+				if (DBConnect.conn != null) {
+					stmt = DBConnect.conn
+							.prepareStatement("SELECT * FROM zerli_db.item_in_catalog WHERE price > 0 ");
+					ResultSet rs = stmt.executeQuery();
+					while (rs.next()) {
+						Item_In_Catalog Item = new Item_In_Catalog(rs.getInt("id"), rs.getString("color"),
+								rs.getString("name"), rs.getString("type"), rs.getFloat("price"),
+								rs.getString("assembleItem"));
+						Catalog.add(Item);
+					}
+					rs.close();
+				} else {
+					System.out.println("Conn is null");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return Catalog;
+		}
+		
+		public static ArrayList<Product_In_Inventory> get_Inventories(String store) {
+			ArrayList<Product_In_Inventory> inventories= new ArrayList<>();
+			PreparedStatement stmt;
+			try {
+				if (DBConnect.conn != null) {
+					stmt = DBConnect.conn
+							.prepareStatement("SELECT * FROM zerli_db.product_inventory WHERE store= ? ");
+					stmt.setString(1,store);
+					ResultSet rs = stmt.executeQuery();
+					while (rs.next()) {
+						inventories.add(new Product_In_Inventory(rs.getString("ProductName"), rs.getString("ProductId"), rs.getString("store"),rs.getInt("Quantity"))) ;
+
+					}
+					rs.close();
+				} else {
+					System.out.println("Conn is null");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return inventories;
+		}
+		
+		public static void Update_Quantity_of_product(ArrayList<String> details) {
+			PreparedStatement stmt;
+			if (details.get(3).equals("0")) {
+				try {
+					stmt = DBConnect.conn.prepareStatement("UPDATE zerli_db.product_inventory SET Quantity=Quantity-? WHERE store=? AND ProductId=? ");
+					System.out.println(details.toString());
+					stmt.setInt(1,Integer.valueOf(details.get(0)));
+					stmt.setString(2,details.get(1));
+					stmt.setString(3,details.get(2));
+					stmt.executeUpdate();
+
+					} catch (SQLException e) {
+				e.printStackTrace();
+					}
+				
+			}
+			else {
+			try {
+				stmt = DBConnect.conn.prepareStatement("UPDATE zerli_db.product_inventory SET Quantity=? WHERE store=? AND ProductId=? ");
+				System.out.println(details.toString());
+				stmt.setInt(1,Integer.valueOf(details.get(0)));
+				stmt.setString(2,details.get(1));
+				stmt.setString(3,details.get(2));
+				stmt.executeUpdate();
+
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			
+			
+			}
+		}
+		
+		
+		//liraz 4.6 - not exist on dana git
 		public static ArrayList<String> GetStoreListForCEORordersDistribution() {
 			ArrayList<String> stores = new ArrayList<String>();
 			Statement stmt;
@@ -937,7 +1042,7 @@ public class Query {
 				}
 			return stores;
 		}
-		//liraz 3.6
+		//liraz 4.6 - not exist on dana git
 		public static String Get_details_for_orders_Distribution(ArrayList<String> details) {
 			PreparedStatement stmt;
 			String amount = null;
@@ -961,7 +1066,7 @@ public class Query {
 			amount  = String.valueOf(cnt2);
 			return amount;
 			}
-			
+		//liraz 4.6 - not exist on dana git
 		public static ArrayList<String> GetYearsListForCEORordersDistribution() {
 			ArrayList<String> years = new ArrayList<String>();
 			Statement stmt;

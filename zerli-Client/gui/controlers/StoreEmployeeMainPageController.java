@@ -13,40 +13,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import main.ClientUI;
 
-public class CustomerEm_main_page_controller extends AbstractController implements Initializable {
+public class StoreEmployeeMainPageController extends AbstractController implements Initializable {
 
     @FXML
     private Label HiUserLabel;
 
     @FXML
-    private Button LogoutBtn;
+    private Button logOutBtn;
 
     @FXML
-    private Button ComplaintTableBtn;
+    private Button UpdateCatalogBtn;
 
     @FXML
-    private Button InsertSurveysBtn;
-
-    @FXML
-    private Button UploadServiceBtn;
-
-    @FXML
-    void goComplaintTable(ActionEvent event) throws IOException {
-        start(event, "CustomerEm_TableComplainScreen", "Table complaints Screen", "");
+    void UpdateCatalog(ActionEvent event) throws IOException {
+    	start(event, "StoreEmployee_update_Catalog", "update_Catalog","");
     }
 
     @FXML
-    void goInsertSurveysPage(ActionEvent event) {
-
-    }
-
-    @FXML
-    void goUpReportPage(ActionEvent event) {
-
-    }
-
-    @FXML
-    void logout(ActionEvent event) throws IOException {
+    void logOut(ActionEvent event) throws IOException {
     	ClientUI.chat.accept(new Message(MessageType.Disconected,LoginScreenController.user.getUserName()));
 		start(event, "LoginUserScreen", "Login","");
     }
@@ -60,6 +44,7 @@ public class CustomerEm_main_page_controller extends AbstractController implemen
 	@Override
 	public void display(String string) {
 		HiUserLabel.setText("Hi "+LoginScreenController.user.getUserName());
+		
 	}
 
 }

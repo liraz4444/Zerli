@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="826.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlers.CEODistributionOfOrdersController">
    <children>
       <Label layoutX="229.0" layoutY="26.0" text="Distribution of orders">
@@ -29,7 +28,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <BarChart fx:id="table1" layoutX="385.0" layoutY="124.0" prefHeight="174.0" prefWidth="404.0">
+      <BarChart fx:id="table1" layoutX="395.0" layoutY="87.0" prefHeight="174.0" prefWidth="404.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -49,7 +48,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <BarChart fx:id="table2" layoutX="385.0" layoutY="343.0" prefHeight="186.0" prefWidth="404.0">
+      <BarChart fx:id="table2" layoutX="395.0" layoutY="318.0" prefHeight="186.0" prefWidth="404.0">
          <xAxis>
             <CategoryAxis side="BOTTOM" />
          </xAxis>
@@ -71,5 +70,10 @@
          </font>
       </Label>
       <ComboBox fx:id="year2Btn" layoutX="222.0" layoutY="436.0" prefWidth="150.0" />
+      <Button fx:id="backBtn" layoutX="693.0" layoutY="540.0" mnemonicParsing="false" onAction="#Back" text="Back">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

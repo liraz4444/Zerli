@@ -1,5 +1,6 @@
 package controlers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -32,6 +33,8 @@ public class CEODistributionOfComplaintsController extends AbstractController im
     @FXML
     private ComboBox<String> year1Btn;
 
+    @FXML
+    private Button backBtn;
     
     public static ArrayList<String> quarterly = new ArrayList<String>();
     public static ArrayList<String> years = new ArrayList<String>();
@@ -48,6 +51,10 @@ public class CEODistributionOfComplaintsController extends AbstractController im
     	details.clear();
     }
 	
+    @FXML
+    void Back(ActionEvent event) throws IOException {
+    	start(event,"CEOMainScreen","","");
+    }
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

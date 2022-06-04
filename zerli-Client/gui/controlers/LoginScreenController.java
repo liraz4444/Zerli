@@ -81,7 +81,7 @@ import main.ClientUI;
 				if (user != null) {
 				  switch (user.getRole()) {
 					case "BranchManager": {
-						start(event, "MainManagerScreen", "Branch Manager", user.getFirstN());
+						start(event, "ManagerMainPageScreen", "Branch Manager", user.getFirstN());
 						break;
 					}
 
@@ -91,7 +91,7 @@ import main.ClientUI;
 					}
 
 					case "CEO": {
-						start(event, "MainCEOScreen", "CEO", user.getFirstN());
+						start(event, "CEOMainScreen", "CEO", user.getFirstN());
 						break;
 
 					}
@@ -105,8 +105,15 @@ import main.ClientUI;
 						break;
 
 					}
+					case "StoreEmployee": {
+						start(event, "StoreEmployeeMainPage", "ServiceSpecialist", user.getFirstN());
+						break;
 				  }
-				}		
+				 }
+				}
+				  
+				  
+					
 			}
 
 			@Override

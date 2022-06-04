@@ -117,7 +117,7 @@ public class ClientOrderPageController  extends AbstractController implements In
     	}
     	createOrder();
     	order.delivery=this.delivery;
-    	start(event, "PaymentScreen", "Payment screen", "");
+    	start(event, "ClientPaymentScreen", "Payment screen", "");
     }
     
     private void createOrder() {
@@ -305,7 +305,7 @@ public class ClientOrderPageController  extends AbstractController implements In
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		TotalPrice = CartScreenController.cart.OrderTotalPrice();
+		TotalPrice = ClientCartScreenController.cart.OrderTotalPrice();
 		ClientOrderPageController.storesList = new ArrayList <Store>();
 		this.storesNames = new ArrayList <String>();
 		ClientUI.chat.accept(new Message(MessageType.InitialShopsList,""));

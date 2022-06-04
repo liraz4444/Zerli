@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
-public class mainCeoScreenController extends AbstractController implements  Initializable{
+public class CEOScreenController extends AbstractController implements  Initializable{
 
     @FXML
     private ResourceBundle resources;
@@ -29,19 +29,19 @@ public class mainCeoScreenController extends AbstractController implements  Init
 
     @FXML
     void ordersReports(ActionEvent event) throws IOException {
-    	start(event,"OrdersReportsForCEOScreen","CEO Orders Reports","");
+    	start(event,"CEOOrdersReportsScreen","CEO Orders Reports","");
     }
     @FXML
     void revenueReports(ActionEvent event) throws IOException {
-    	start(event,"RevenueReportsForCEOScreen","CEO revenue Reports","");
+    	start(event,"CEORevenueReportsScreen","CEO revenue Reports","");
     }
     @FXML
     void HistogramOrders(ActionEvent event) throws IOException {
-    	start(event,"HistogramOrdersForCEO","","");
+    	start(event,"CEOHistogramOrdersScreen","","");
     }
     @FXML
     void HistogramComplaints(ActionEvent event) throws IOException {
-    	start(event,"HistogramComplaintForCEO","","");
+    	start(event,"CEOHistogramComplaintScreen","","");
     }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

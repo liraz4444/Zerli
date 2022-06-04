@@ -57,8 +57,6 @@ public class ParsingServer {
 		}
 		case getRevenueReports: {
 			ArrayList<String> details = (ArrayList<String>)receivedMessage.getMessageData();
-			System.out.println("line 58");
-			System.out.println(details);
 			ArrayList<RevenueReport> revenue = Query.getRevenueReports(details);
 			return (new Message(MessageType.RevenueReports_succ,revenue));
 		}
@@ -81,6 +79,7 @@ public class ParsingServer {
 			String customerToFreeze = (String)(receivedMessage.getMessageData());
 			Query.FreezeCustomer(customerToFreeze);
 		}
+        //liraz 4.6 - not exist on dana git
 		case getHomeStore:{
 			ArrayList<String> storelist = (ArrayList<String>) Query.getstorelist();
 			return (new Message(MessageType.getHomwStore_succ,storelist));
@@ -149,10 +148,12 @@ public class ParsingServer {
 //			ArrayList<Complaint> tableComplaints = (ArrayList<Complaint>) Query.getCmplaintsTable();
 //			return (new Message(MessageType.getTableComplaintsFromDB_succ,tableComplaints));
 //		}
-		case setRefundToClient:{
-			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
-			Query.UpdateRefundToClient(details);
-		}
+		
+		//liraz 4.6 - not exist on dana git
+//		case setRefundToClient:{
+//			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
+//			Query.UpdateRefundToClient(details);
+//		}
 		case GetStore:{
 			ArrayList<String> store = (ArrayList<String>)Query.getListOfStoreForCeo();
 			return (new Message(MessageType.getStore_succ,store)); 
@@ -167,9 +168,7 @@ public class ParsingServer {
 			return (new Message(MessageType.getTypeProductForCEOordersReports_succ,productype));
 		}
 		case getCEOordersReport:{
-			System.out.println("line 124");
 			ArrayList <String> details = (ArrayList<String>) receivedMessage.getMessageData();
-			System.out.println("line 126");
 			ArrayList<OrdersReport> typeOrders = Query.getOrdersReportForCEO(details);
 			return (new Message(MessageType.getCEOordersReports_succ,typeOrders));
 		}
@@ -211,11 +210,9 @@ public class ParsingServer {
 			return (new Message(MessageType.UpdateCompList_succ,Query.getComplaints()));
 
 		}
-		//liraz-3.6
+		//liraz 4.6 - not exist on dana git
 		case  Get_All_Order_by_Store :{
 			String ManagerStore = (String) receivedMessage.getMessageData();
-			System.out.println("line-198");
-			System.out.println(ManagerStore);
 			ArrayList<Order> orders=Query.get_Orders_list_for_manager(ManagerStore);
 			return (new Message(MessageType.Get_All_Order_by_Store_succ,orders));
 		}
@@ -251,24 +248,40 @@ public class ParsingServer {
 			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
 			Query.Update_refund_of_cancel_order(details);
 		}
-		//liraz-3.6
+		case getClientEmailAndPhone:{
+			String clientId = (String)(receivedMessage.getMessageData());
+			return (new Message(MessageType.ClientEmailAndPhone_succ,Query.getClientEmailAndPhone(clientId)));
+		}
+		case Get_All_Items_In_Catalog :{
+			return (new Message(MessageType.Get_All_Items_In_Catalog_succ,Query.get_All_Catalog()));
+		}
+		case  get_Inventories:{
+			String store = (String)(receivedMessage.getMessageData());
+			return (new Message(MessageType. get_Inventories_succ,Query.get_Inventories(store)));
+		}
+		case UpdateQuanInInventory:{
+			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
+			Query.Update_Quantity_of_product(details);
+		}
+		//liraz 4.6 - not exist on dana git
 		case getStoresForCEOordersDistribution:{
 			ArrayList<String> storeList =  Query.GetStoreListForCEORordersDistribution();
 			return (new Message(MessageType.getHomwStoreForCEORDistributionOfOrders_succ,storeList));
 		}
-		//liraz-3.6
+		//liraz 4.6 - not exist on dana git
 		case SetDetailsInTable1ForCEOordersDistribution:{
 			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
 			String income = Query.Get_details_for_orders_Distribution(details);
 			return (new Message(MessageType.SetDetailsInTable1ForCEOordersDistribution_succ,income));
 			
 		}
-		//liraz-3.6
-//		case getYearsForCEOordersDistribution:{
-//			ArrayList<String> yearsList =  Query.GetYearsListForCEORordersDistribution();
-//			return (new Message(MessageType.getYearsForCEORDistributionOfOrders_succ,yearsList));
-//		}
-		//liraz-3.6
+		//liraz 4.6 - not exist on dana git
+		case getYearsForCEOordersDistribution:{
+			ArrayList<String> yearsList =  Query.GetYearsListForCEORordersDistribution();
+			return (new Message(MessageType.getYearsForCEORDistributionOfOrders_succ,yearsList));
+		}
+		
+		//liraz 4.6 - not exist on dana git
 		case getForCEOComplaintsDistribution:{
 			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
 			System.out.println(details);

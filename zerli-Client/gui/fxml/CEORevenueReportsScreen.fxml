@@ -35,5 +35,10 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Button>
+      <Button fx:id="backBtn" layoutX="666.0" layoutY="520.0" mnemonicParsing="false" onAction="#Back" text="Back">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

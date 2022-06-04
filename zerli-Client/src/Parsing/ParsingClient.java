@@ -9,6 +9,7 @@ import Entities.Item_In_Catalog;
 import Entities.Message;
 import Entities.Order;
 import Entities.OrdersReport;
+import Entities.Product_In_Inventory;
 import Entities.RevenueReport;
 import Entities.Store;
 import Entities.User;
@@ -26,10 +27,14 @@ import controlers.CustomerEm_Insert_New_Com_Controller;
 import controlers.LoginScreenController;
 import controlers.ManagerAddAccountController;
 import controlers.ManagerFreezeController;
+import controlers.ManagerOrdersController;
+import controlers.ManagerSendEmailController;
 import controlers.ManagerViewReportsOrders;
 import controlers.ManagerViewReportsRevenueController;
 import controlers.UpdateItemsInCatalogController;
 import controlers.PaymentScreenController;
+import controlers.StoreEmployee_update_Inventory_controller;
+import controlers.StoreEmployee_update_Item_controller;
 import controlers.TableComplaintsScreenController;
 
 public class ParsingClient {
@@ -103,12 +108,15 @@ public class ParsingClient {
 		case getCustomerToFreeze_succ:{
 			ManagerFreezeController.customerList =  (ArrayList<String>)(receivedMessage.getMessageData());
 		}
+		//liraz-4.6 - not exist on dana git
 		case getHomwStore_succ:{
-			ManagerFreezeController.homeStoreList = (ArrayList<String>)(receivedMessage.getMessageData());
+			ManagerFreezeController.customerList = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
+		//liraz-4.6 - not exist on dana git
 		case getNamesitems_succ:{
 			UpdateItemsInCatalogController.NamesproductList = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
+		//liraz-4.6 - not exist on dana git
 		case getTypeProductForCatalog_succ:{
 			UpdateItemsInCatalogController.productType1 = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
@@ -145,31 +153,37 @@ public class ParsingClient {
 		case Get_All_Order_by_id_succ:{
 			ClientOrdersController.list = (ArrayList<Order>) (receivedMessage.getMessageData());
 		}
+		case Get_Orders_by_Store_succ :{
+			ManagerOrdersController.listOfOrders = (ArrayList<Order>) (receivedMessage.getMessageData());
+		    break;
+		}
 		case getRecipt_succ:{
 			ClientOrdersController.recipt =  (ArrayList<String>)( receivedMessage.getMessageData());
 		}
-		//liraz-3.6
+		//liraz-4.6 - not exist on dana git
 		case getIdFromComplaitnDB_succ:{
 			TableComplaintsScreenController.listID = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
-		//liraz-3.6
+		//liraz-4.6 - not exist on dana git
 		case getTableComplaintsFromDB_succ:{
 			TableComplaintsScreenController.listTable = (ArrayList<Complaint>)(receivedMessage.getMessageData());
 		}
+
 		case getHomwStoreForCEOordersReports_succ:{
 			CEOViewReportsOrdersController.stores = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
+		
 		case getTypeProductForCEOordersReports_succ:{
 			CEOViewReportsOrdersController.types = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
 		case getCEOordersReports_succ:{
 			CEOViewReportsOrdersController.reports = (ArrayList<OrdersReport>)(receivedMessage.getMessageData());
 		}
-		//liraz-3.6
+		//liraz-4.6 - not exist on dana git
 		case getHomwStoreForCEORevenenueReports_succ: {
 			CEOViewReportsRevenueController.stores = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
-		//liraz-3.6
+		//liraz-4.6 - not exist on dana git
 		case getRevenueReportForCEO_succ: {
 			CEOViewReportsRevenueController.revenue = (ArrayList<RevenueReport>)(receivedMessage.getMessageData());
 		}
@@ -177,20 +191,38 @@ public class ParsingClient {
 			CustomerEmTableComplaintsScreenController.complaints = (ArrayList<Complaint>) (receivedMessage.getMessageData());
 			break;
 		}
+		case  RefundForClient_succ:{
+			ManagerOrdersController.ammount =  receivedMessage.getMessageData();
+			break;
+		}
 		case ClientExist_succ:{
 			CustomerEm_Insert_New_Com_Controller.ClientEx=!((ArrayList<String>) (receivedMessage.getMessageData())).isEmpty();
 		}
-		//liraz-3.6
+		case ClientEmailAndPhone_succ :{
+			 ManagerSendEmailController.email_phone = (ArrayList<String>) (receivedMessage.getMessageData());
+				break;
+		}
+		case Get_All_Items_In_Catalog_succ :{
+			 StoreEmployee_update_Item_controller.All_Items_In_Catalog =(ArrayList<Item_In_Catalog>) (receivedMessage.getMessageData());
+			 break;
+		}
+		case get_Inventories_succ:{
+			StoreEmployee_update_Inventory_controller.Inventories = (ArrayList<Product_In_Inventory>) (receivedMessage.getMessageData());
+			 break;
+		}
+		//liraz-4.6 - not exist on dana git
 		case getHomwStoreForCEORDistributionOfOrders_succ:{
 			CEODistributionOfOrdersController.stores = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
-		//liraz-3.6
+		///liraz-4.6 - not exist on dana git
 		case getYearsForCEORDistributionOfOrders_succ:{
 			CEODistributionOfOrdersController.years = (ArrayList<String>)(receivedMessage.getMessageData());
 		}
+		//liraz-4.6 - not exist on dana git
 		case SetDetailsInTable1ForCEOordersDistribution_succ:{
 			CEODistributionOfOrdersController.income = (String) receivedMessage.getMessageData();
 		}
+		//liraz-4.6 - not exist on dana git
 		case getForCEOComplaintsDistribution_succ: {
 			CEODistributionOfComplaintsController.counter = (int)receivedMessage.getMessageData();
 		}

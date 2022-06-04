@@ -116,6 +116,7 @@ public class ClientCart {
 	    	  return (float) 0 ;
 	      }
 	      
+	      
 	      public void CreateRecipt() {
 	    	  StringBuilder recipt = new StringBuilder();
 	    	  for(List<Item_In_Catalog> i : Order_Components.values()) {
@@ -130,7 +131,7 @@ public class ClientCart {
 	    		  recipt.append("#");
 	    	  }
 	    	 float totalPrice = this.OrderTotalPrice();
-	    	 recipt.append("Total price = "+totalPrice);
+	    	 recipt.append("Total price = "+totalPrice+"$");
 	    	 recipt.append("#");
              this.Recipt= recipt.toString();
 	      }
@@ -142,6 +143,5 @@ public class ClientCart {
 	      
 	         
 }
-
 
 
