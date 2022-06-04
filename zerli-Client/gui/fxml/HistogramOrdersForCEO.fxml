@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="826.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlers.CEODistributionOfOrdersController">
+   <children>
+      <Label layoutX="229.0" layoutY="26.0" text="Distribution of orders">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="store1Btn" layoutX="34.0" layoutY="111.0" prefWidth="150.0" />
+      <ComboBox fx:id="quarterlyBtn" layoutX="33.0" layoutY="198.0" prefWidth="150.0" />
+      <Label layoutX="34.0" layoutY="80.0" prefHeight="27.0" prefWidth="126.0" text="Choose store :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="28.0" layoutY="161.0" prefHeight="27.0" prefWidth="159.0" text="Choose quarterly :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <BarChart fx:id="table1" layoutX="385.0" layoutY="124.0" prefHeight="174.0" prefWidth="404.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Label layoutX="29.0" layoutY="305.0" prefHeight="27.0" prefWidth="126.0" text="Choose store :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="store2Btn" layoutX="33.0" layoutY="343.0" prefWidth="150.0" />
+      <ComboBox fx:id="quarterly2Btn" layoutX="34.0" layoutY="436.0" prefWidth="150.0" />
+      <Label layoutX="34.0" layoutY="392.0" prefHeight="27.0" prefWidth="159.0" text="Choose quarterly :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <BarChart fx:id="table2" layoutX="385.0" layoutY="343.0" prefHeight="186.0" prefWidth="404.0">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </BarChart>
+      <Button fx:id="show1Btn" layoutX="34.0" layoutY="259.0" mnemonicParsing="false" onAction="#ShowStore1" text="Show" />
+      <Button fx:id="show2Btn" layoutX="34.0" layoutY="487.0" mnemonicParsing="false" onAction="#ShowStore2" text="Show" />
+      <Label layoutX="222.0" layoutY="161.0" prefHeight="27.0" prefWidth="126.0" text="Choose year :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="year1Btn" layoutX="222.0" layoutY="198.0" prefWidth="150.0" />
+      <Label layoutX="222.0" layoutY="398.0" prefHeight="18.0" prefWidth="126.0" text="Choose year :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="year2Btn" layoutX="222.0" layoutY="436.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>

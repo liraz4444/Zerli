@@ -35,6 +35,14 @@ public class mainCeoScreenController extends AbstractController implements  Init
     void revenueReports(ActionEvent event) throws IOException {
     	start(event,"RevenueReportsForCEOScreen","CEO revenue Reports","");
     }
+    @FXML
+    void HistogramOrders(ActionEvent event) throws IOException {
+    	start(event,"HistogramOrdersForCEO","","");
+    }
+    @FXML
+    void HistogramComplaints(ActionEvent event) throws IOException {
+    	start(event,"HistogramComplaintForCEO","","");
+    }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub

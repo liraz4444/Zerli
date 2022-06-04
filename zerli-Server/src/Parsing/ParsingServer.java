@@ -1,5 +1,6 @@
 package Parsing;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import Entities.Client;
@@ -24,7 +25,7 @@ public class ParsingServer {
 		
 		case userlogin: {
 			String result;
-			String[] DivededUandP = ((String) receivedMessage.getMessageData()).split("@");
+			String[] DivededUandP = ((String) receivedMessage.getMessageData()).split("#");
 			result = Query.Login(DivededUandP[0], DivededUandP[1]);
 			if (!result.equals("Already") && !result.equals("WrongInput") && !result.equals("Freeze")) {
 				LogicController.UpdateClientTable(msg, client);
@@ -220,7 +221,6 @@ public class ParsingServer {
 		}
 		case getStoresForCEORevenueReports :{
 			ArrayList<String> storeList = Query.GetStoreListForCEORevenueReports();
-			System.out.println(storeList);
 			return (new Message(MessageType.getHomwStoreForCEORevenenueReports_succ,storeList));
 		}
 		case showRevenueReportsForCEO :{
@@ -250,6 +250,30 @@ public class ParsingServer {
 		case UpdateCreditForClient:{
 			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
 			Query.Update_refund_of_cancel_order(details);
+		}
+		//liraz-3.6
+		case getStoresForCEOordersDistribution:{
+			ArrayList<String> storeList =  Query.GetStoreListForCEORordersDistribution();
+			return (new Message(MessageType.getHomwStoreForCEORDistributionOfOrders_succ,storeList));
+		}
+		//liraz-3.6
+		case SetDetailsInTable1ForCEOordersDistribution:{
+			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
+			String income = Query.Get_details_for_orders_Distribution(details);
+			return (new Message(MessageType.SetDetailsInTable1ForCEOordersDistribution_succ,income));
+			
+		}
+		//liraz-3.6
+//		case getYearsForCEOordersDistribution:{
+//			ArrayList<String> yearsList =  Query.GetYearsListForCEORordersDistribution();
+//			return (new Message(MessageType.getYearsForCEORDistributionOfOrders_succ,yearsList));
+//		}
+		//liraz-3.6
+		case getForCEOComplaintsDistribution:{
+			ArrayList<String> details = (ArrayList<String>)(receivedMessage.getMessageData());
+			System.out.println(details);
+			int cnt = Query.GetComplaintsListForCEOComplaintsDistribution(details);
+			return (new Message(MessageType.getForCEOComplaintsDistribution_succ,cnt));
 		}
 		default:
 			break;

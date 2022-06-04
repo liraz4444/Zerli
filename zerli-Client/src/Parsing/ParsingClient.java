@@ -12,6 +12,8 @@ import Entities.OrdersReport;
 import Entities.RevenueReport;
 import Entities.Store;
 import Entities.User;
+import controlers.CEODistributionOfComplaintsController;
+import controlers.CEODistributionOfOrdersController;
 import controlers.CEOViewReportsOrdersController;
 import controlers.CEOViewReportsRevenueController;
 import controlers.CartScreenController;
@@ -40,7 +42,7 @@ public class ParsingClient {
 		switch (receivedMessage.getMessageType()) {
 
 		case userlogin: {
-			String[] DivedMsg = ((String) receivedMessage.getMessageData()).split("@");
+			String[] DivedMsg = ((String) receivedMessage.getMessageData()).split("#");
 			if (!receivedMessage.getMessageData().equals("WrongInput")) {
 				if (receivedMessage.getMessageData().equals("Already")) {
 					LoginScreenController.statusUser = "The user is already logged in";
@@ -178,7 +180,20 @@ public class ParsingClient {
 		case ClientExist_succ:{
 			CustomerEm_Insert_New_Com_Controller.ClientEx=!((ArrayList<String>) (receivedMessage.getMessageData())).isEmpty();
 		}
-
+		//liraz-3.6
+		case getHomwStoreForCEORDistributionOfOrders_succ:{
+			CEODistributionOfOrdersController.stores = (ArrayList<String>)(receivedMessage.getMessageData());
+		}
+		//liraz-3.6
+		case getYearsForCEORDistributionOfOrders_succ:{
+			CEODistributionOfOrdersController.years = (ArrayList<String>)(receivedMessage.getMessageData());
+		}
+		case SetDetailsInTable1ForCEOordersDistribution_succ:{
+			CEODistributionOfOrdersController.income = (String) receivedMessage.getMessageData();
+		}
+		case getForCEOComplaintsDistribution_succ: {
+			CEODistributionOfComplaintsController.counter = (int)receivedMessage.getMessageData();
+		}
 		default:{
 			break;
 		}

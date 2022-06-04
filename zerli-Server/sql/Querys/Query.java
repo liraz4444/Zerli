@@ -38,24 +38,24 @@ public class Query {
 					}
 					role = rs.getNString(1);
 					result.append(rs.getString(1));
-					result.append("@");
+					result.append("#");
 					ID = rs.getString(2);
 					result.append(rs.getString(2));
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(3));//firstName
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(4));//lastName
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(5));//userName
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(6));//password
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(7));//isLoogin
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(8));//phone
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(9));//email
-					result.append("@");
+					result.append("#");
 					result.append(rs.getString(10));//homeStore
 
 				}
@@ -85,7 +85,6 @@ public class Query {
 		}
 		return result.toString();
 	}
-
 	public static void UpdateisLoggedIn(String UserName) {
 		PreparedStatement stmt;
 		try {
@@ -922,7 +921,96 @@ public class Query {
 			details.add(String.valueOf(amount));
 			Update_refund(details);
 			}
+		//liraz-3.6
+		public static ArrayList<String> GetStoreListForCEORordersDistribution() {
+			ArrayList<String> stores = new ArrayList<String>();
+			Statement stmt;
+			try {
+				stmt = DBConnect.conn.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT storeCode FROM zerli_db.stores");
+				while (rs.next()) {
+					stores.add(rs.getString(1));
+				}
+					rs.close();
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			return stores;
+		}
+		//liraz 3.6
+		public static String Get_details_for_orders_Distribution(ArrayList<String> details) {
+			PreparedStatement stmt;
+			String amount = null;
+			int cnt=0;
+			int cnt2=0;
+			try {
+				stmt = DBConnect.conn.prepareStatement("SELECT income FROM zerli_db.revenue_reports WHERE store = ? AND Quarterly = ? AND year=?");
+				stmt.setString(1,details.get(0));
+				stmt.setString(2,details.get(1));
+				stmt.setString(3,details.get(2));
+				ResultSet rs = stmt.executeQuery();
+				while(rs.next()) {
+					amount = rs.getString("income");
+					cnt  = Integer.parseInt(amount);
+					cnt2 += cnt;
+				}
+				rs.close();
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			amount  = String.valueOf(cnt2);
+			return amount;
+			}
 			
+		public static ArrayList<String> GetYearsListForCEORordersDistribution() {
+			ArrayList<String> years = new ArrayList<String>();
+			Statement stmt;
+			try {
+				stmt = DBConnect.conn.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT year FROM zerli_db.revenue_reports");
+				while (rs.next()) {
+					years.add(rs.getString(1));
+				}
+					rs.close();
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			return years;
+			
+}
+		//liraz 4.6
+		public static int GetComplaintsListForCEOComplaintsDistribution(ArrayList<String> details) {
+			ArrayList<Timestamp> temp = new ArrayList<Timestamp>();
+			ArrayList<String> years = new ArrayList<String>();
+			ArrayList<String> Quarterlys = new ArrayList<String>();
+			int year,Quarterly,cnt = 0;
+			Statement stmt;
+			try {
+				stmt = DBConnect.conn.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT complaintTime FROM zerli_db.complaints");
+				while (rs.next()) {
+					temp.add(rs.getTimestamp("complaintTime"));
+				}
+				for(Timestamp t : temp) {
+					year = t.getYear()+1900;
+					Quarterly = ((t.getMonth()/3)+1);
+					years.add(String.valueOf(year));
+					Quarterlys.add(String.valueOf(Quarterly));
+				}
+				String quarterly_db = details.get(0);
+				String year_db = details.get(1);
+				for(int i=0; i<years.size(); i++)
+						if(year_db.equals(years.get(i)) && quarterly_db.equals(Quarterlys.get(i)))
+							cnt++;
+				
+					rs.close();
+				} catch (SQLException e) {
+			e.printStackTrace();
+				}
+			years.clear();
+			Quarterlys.clear();
+			return cnt;
+		}
 }
 
 		

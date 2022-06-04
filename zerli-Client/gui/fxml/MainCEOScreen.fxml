@@ -28,5 +28,15 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
+      <Button fx:id="viewRevenueBtn1" layoutX="238.0" layoutY="311.0" mnemonicParsing="false" onAction="#HistogramOrders" prefHeight="59.0" prefWidth="239.0" text="View distribution orders">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="viewRevenueBtn11" layoutX="238.0" layoutY="396.0" mnemonicParsing="false" onAction="#HistogramComplaints" prefHeight="59.0" prefWidth="239.0" text="View distribution complaints">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

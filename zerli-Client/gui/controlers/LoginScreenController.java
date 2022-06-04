@@ -91,7 +91,7 @@ import main.ClientUI;
 					}
 
 					case "CEO": {
-						start(event, "CEOScreen", "CEO", user.getFirstN());
+						start(event, "MainCEOScreen", "CEO", user.getFirstN());
 						break;
 
 					}
